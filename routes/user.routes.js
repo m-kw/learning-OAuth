@@ -1,32 +1,28 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/logged', (req, res) => {
+const isLogged = (req, res, next) => {
     if (!req.user) {
         res.redirect('/user/no-permission');
     } else {
-        res.render('logged');
+        next();
     }
+};
+
+router.get('/logged', isLogged, (req, res) => {
+    res.render('logged');
 });
 
 router.get('/no-permission', (req, res) => {
     res.render('noPermission');
 });
 
-router.get('/profile', (req, res) => {
-    if (!res.user) {
-        res.redirect('/user/no-permission');
-    } else {
-        res.render('profile');
-    }
+router.get('/profile', isLogged, (req, res) => {
+    res.render('profile');
 });
 
-router.get('/profile/settings', (req, res) => {
-    if (!req.user) {
-        res.redirect('/user/no-permission');
-    } else {
-        res.render('profileSettings');
-    }
+router.get('/profile/settings', isLogged, (req, res) => {
+    res.render('profileSettings');
 });
 
 
