@@ -3,33 +3,14 @@ const cors = require('cors');
 const path = require('path');
 const hbs = require('express-handlebars');
 const passport = require('passport');
-const GoogleStartegy = require('passport-google-oauth20').Strategy;
+const passportConfig = require('./config/passport');
 const session = require('express-session');
 
 const app = express();
 
-passport.use(new GoogleStartegy({
-  clientID: process.env.clientID,
-  clientSecret: process.env.clientSecret,
-  callbackURL: process.env.callbackURL,
-}, (accessToken, refreshToken, profile, done) => {
-  console.log('profile', profile);
-  done(null, profile);
-}));
-
 app.use(session({ secret: 'anything' }));
 app.use(passport.initialize());
 app.use(passport.session());
-
-// serialize user when saving to session
-passport.serializeUser((user, serialize) => {
-  serialize(null, user);
-});
-
-// deserialize user when reading from session
-passport.deserializeUser((obj, deserialize) => {
-  deserialize(null, obj);
-});
 
 app.engine('hbs', hbs({ extname: 'hbs', layoutsDir: './layouts', defaultLayout: 'main' }));
 app.set('view engine', '.hbs');
