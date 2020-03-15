@@ -9,7 +9,7 @@ const session = require('express-session');
 const app = express();
 
 passport.use(new GoogleStartegy({
-  clientID: '7133139195667-i7nit1bktop5jurhvv6vhnpervffked.apps.googleusercontent.com',
+  clientID: '713313919566-7i7nit1bktop5jurhvv6vhnpervffked.apps.googleusercontent.com',
   clientSecret: 'efCFhrRWhdqoA7YeXMypzcaT',
   callbackURL: 'http://localhost:8000/auth/google/callback',
 }, (accessToken, refreshToken, profile, done) => {
@@ -49,6 +49,8 @@ app.get('/user/logged', (req, res) => {
 app.get('/user/no-permission', (req, res) => {
   res.render('noPermission');
 });
+
+app.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
 
 app.use('/', (req, res) => {
   res.status(404).render('notFound');
