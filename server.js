@@ -9,9 +9,9 @@ const session = require('express-session');
 const app = express();
 
 passport.use(new GoogleStartegy({
-  clientID: '713313919566-7i7nit1bktop5jurhvv6vhnpervffked.apps.googleusercontent.com',
-  clientSecret: 'efCFhrRWhdqoA7YeXMypzcaT',
-  callbackURL: 'http://localhost:8000/auth/google/callback',
+  clientID: process.env.clientID,
+  clientSecret: process.env.clientSecret,
+  callbackURL: process.env.callbackURL,
 }, (accessToken, refreshToken, profile, done) => {
   console.log('profile', profile);
   done(null, profile);
