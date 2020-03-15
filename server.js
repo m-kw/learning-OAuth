@@ -13,6 +13,7 @@ passport.use(new GoogleStartegy({
   clientSecret: 'efCFhrRWhdqoA7YeXMypzcaT',
   callbackURL: 'http://localhost:8000/auth/google/callback',
 }, (accessToken, refreshToken, profile, done) => {
+  console.log('profile', profile);
   done(null, profile);
 }));
 
@@ -51,6 +52,12 @@ app.get('/user/no-permission', (req, res) => {
 });
 
 app.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
+
+app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/user/no-permission' }), 
+  (req, res) => {
+    res.redirect('/user/logged');
+  }
+);
 
 app.use('/', (req, res) => {
   res.status(404).render('notFound');
